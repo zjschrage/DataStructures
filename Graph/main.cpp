@@ -47,43 +47,40 @@ void PrintGraph(Graph<V>& g) {
 
 template<typename V, typename... Args>
 void LinkNodes(Graph<V>& g, int target, Args... links) {
-    g.LinkNodes(target, std::vector<NodeID>{links...});
+    g.LinkNodes(target, std::vector<NodeID>{static_cast<NodeID>(links)...});
 }
 
 template<typename V, typename... Args>
 void UnlinkNodes(Graph<V>& g, int target, Args... links) {
-    g.UnlinkNodes(target, std::vector<NodeID>{links...});
+    g.UnlinkNodes(target, std::vector<NodeID>{static_cast<NodeID>(links)...});
 }
 
 int main() {
     Graph<MyValue> g;
-    std::unordered_map<int, int> nodeTracker;
 
     //Add initial nodes
-    int offset = 100;
     int numNodes = 10;
     const int asciiA = 97;
-    for (int i = offset; i < offset + numNodes; i++) {
+    for (int i = 0; i < numNodes; i++) {
         std::string s;
-        s += (char)(i - offset + asciiA);
-        int nodeId = g.AddNode(MyValue(i, s));
-        nodeTracker[i] = nodeId;
+        s += (char)(i + asciiA);
+        g.AddNode(MyValue(i, s), i);
     }
 
-    g.LinkNodes(nodeTracker[offset + 0], std::vector<NodeID>{(NodeID)nodeTracker[offset + 1], (NodeID)nodeTracker[offset + 2]});
+    g.LinkNodes(0, std::vector<NodeID>{1, 2});
     PrintGraph(g);
 
-    LinkNodes(g, nodeTracker[offset + 1], (NodeID)nodeTracker[offset + 5], (NodeID)nodeTracker[offset + 7], (NodeID)nodeTracker[offset + 9]);
-    LinkNodes(g, nodeTracker[offset + 2], (NodeID)nodeTracker[offset + 8], (NodeID)nodeTracker[offset + 9]);
-    LinkNodes(g, nodeTracker[offset + 3], (NodeID)nodeTracker[offset + 4], (NodeID)nodeTracker[offset + 5], (NodeID)nodeTracker[offset + 6], (NodeID)nodeTracker[offset + 7]);
-    LinkNodes(g, nodeTracker[offset + 4], (NodeID)nodeTracker[offset + 0], (NodeID)nodeTracker[offset + 6]);
+    LinkNodes(g, 1, 5, 7, 9);
+    LinkNodes(g, 2, 8, 9);
+    LinkNodes(g, 3, 4, 5, 6, 7);
+    LinkNodes(g, 4, 0, 6);
     PrintGraph(g);
 
-    UnlinkNodes(g, nodeTracker[offset + 1], (NodeID)nodeTracker[offset + 9]);
-    UnlinkNodes(g, nodeTracker[offset + 3], (NodeID)nodeTracker[offset + 7]);
-    UnlinkNodes(g, nodeTracker[offset + 5], (NodeID)nodeTracker[offset + 1], (NodeID)nodeTracker[offset + 3]);
+    UnlinkNodes(g, 1, 9);
+    UnlinkNodes(g, 3, 7);
+    UnlinkNodes(g, 5, 1, 3);
     PrintGraph(g);
 
-    g.RemoveNode(nodeTracker[offset + 4]);
+    g.RemoveNode(4);
     PrintGraph(g);
 }
