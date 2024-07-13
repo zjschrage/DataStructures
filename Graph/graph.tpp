@@ -86,7 +86,7 @@ namespace ZLib {
         if (graph_.find(targetId) == graph_.end())
             return nullptr;
 
-        return &graph_[targetId].val_;
+        return &graph_.at(targetId).val_;
     }
 
     template<typename NodeVal>
