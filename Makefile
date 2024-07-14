@@ -4,6 +4,10 @@ CXX = g++
 # Compiler flags
 CXXFLAGS = -std=c++2a -Wall -Wextra -pedantic
 
+ifeq ($(DEBUG),1)
+    CXXFLAGS += -DDEBUG
+endif
+
 # Directories
 OBJDIR = $(PROJ_DIR)/obj
 BINDIR = $(PROJ_DIR)/bin

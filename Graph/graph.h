@@ -54,7 +54,7 @@ namespace ZLib {
     private:
         std::unordered_map<NodeID, Node<NodeVal>> graph_;
         NodeID currNodeId_{0};
-        std::mutex nodeIdMutex;
+        mutable std::recursive_mutex graphMutex_;
     };
 
 }
