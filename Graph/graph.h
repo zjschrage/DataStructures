@@ -45,8 +45,11 @@ namespace ZLib {
         //Returns all node ids in graph;
         NodeIDs GetAllNodes() const;
 
+        //Returns mutable node value from a node id
+        NodeVal* GetNodeMutable(NodeID targetId);
+
         //Returns node value from a node id
-        NodeVal* GetNode(NodeID targetId);
+        const NodeVal* GetNode(NodeID targetId) const;
 
         //Returns node ids of neighbors of a given node
         NodeIDs GetNeighbors(NodeID targetId) const;

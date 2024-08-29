@@ -116,12 +116,23 @@ namespace ZLib {
     }
 
     template<typename NodeVal>
-    NodeVal* Graph<NodeVal>::GetNode(NodeID targetId) {
+    NodeVal* Graph<NodeVal>::GetNodeMutable(NodeID targetId) {
         std::scoped_lock lock(graphMutex_);
-        
+
         if (graph_.find(targetId) == graph_.end())
             return nullptr;
 
+        LOG_VA("Retrieved value from node id %llu\n", targetId);
+        return &graph_.at(targetId).val_;
+    }
+
+    template<typename NodeVal>
+    const NodeVal* Graph<NodeVal>::GetNode(NodeID targetId) const {
+        std::scoped_lock lock(graphMutex_);
+
+        if (graph_.find(targetId) == graph_.end())
+            return nullptr;
+        
         LOG_VA("Retrieved value from node id %llu\n", targetId);
         return &graph_.at(targetId).val_;
     }

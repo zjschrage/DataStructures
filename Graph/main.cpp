@@ -31,9 +31,9 @@ namespace std {
 }
 
 template<typename V>
-void PrintGraph(Graph<V>& g) {
+void PrintGraph(const Graph<V>& g) {
     for (const auto& nodeId : g.GetAllNodes()) {
-        auto* val = g.GetNode(nodeId);
+        const auto* val = g.GetNode(nodeId);
         const auto neighbors = g.GetNeighbors(nodeId);
         printf("Node ID: %llu, Value: [%s], Neighbors: ", nodeId, std::to_string(*val).c_str());
         for (NodeID i : neighbors) {
@@ -45,9 +45,9 @@ void PrintGraph(Graph<V>& g) {
 }
 
 template<typename V>
-void PrintAllNodeVals(Graph<V>& g) {
+void PrintAllNodeVals(const Graph<V>& g) {
     for (const auto nodeId : g.GetAllNodes()) {
-        auto* valPtr = g.GetNode(nodeId);
+        const auto* valPtr = g.GetNode(nodeId);
         printf("Node: %s\n", std::to_string(*valPtr).c_str());
     }
     printf("\n");
@@ -92,7 +92,7 @@ void SimpleAPITest() {
     PrintGraph(g);
 
     PrintAllNodeVals(g);
-    g.GetNode(5)->s_ = "x";
+    g.GetNodeMutable(5)->s_ = "x";
     PrintAllNodeVals(g);
 
     g.AddNode(MyValue(100, "test"), 10);
